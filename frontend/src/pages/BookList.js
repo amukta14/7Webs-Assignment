@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, Grid, Card, CardContent, Chip, Pagination, TextField, MenuItem, Stack, Rating } from '@mui/material';
+import { Box, Typography, Button, Grid, Card, CardContent, Chip, Pagination, TextField, MenuItem, Stack, Rating, CircularProgress } from '@mui/material';
 import api from '../api';
 import { useNavigate } from 'react-router-dom';
 
@@ -54,49 +54,55 @@ const BookList = () => {
           {authors.map(a => <MenuItem key={a} value={a}>{a}</MenuItem>)}
         </TextField>
       </Stack>
-      <Grid container spacing={3}>
-        {books.length === 0 ? (
-          <Grid>
-            <Box textAlign="center" mt={8}>
-              <Typography variant="h6" color="text.secondary">No books found. Add your first book!</Typography>
-            </Box>
-          </Grid>
-        ) : books.map(book => (
-          <Grid key={book._id}>
-            <Card sx={{
-              cursor: 'pointer',
-              borderRadius: 3,
-              boxShadow: 3,
-              transition: 'transform 0.2s, box-shadow 0.2s',
-              '&:hover': {
-                transform: 'translateY(-4px) scale(1.03)',
-                boxShadow: 6,
-              },
-              minHeight: 220,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }} onClick={() => navigate(`/books/${book._id}`)}>
-              <Box display="flex" justifyContent="center" alignItems="center" pt={3}>
-                <Box sx={{ width: 60, height: 80, bgcolor: '#e3eafc', borderRadius: 2, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Typography variant="h3" color="primary" sx={{ opacity: 0.2 }}>
-                    📚
-                  </Typography>
-                </Box>
+      {loading ? (
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="40vh">
+          <CircularProgress color="primary" size={60} />
+        </Box>
+      ) : (
+        <Grid container spacing={3}>
+          {books.length === 0 ? (
+            <Grid>
+              <Box textAlign="center" mt={8}>
+                <Typography variant="h6" color="text.secondary">No books found. Add your first book!</Typography>
               </Box>
-              <CardContent>
-                <Typography variant="h6" fontWeight={600}>{book.title}</Typography>
-                <Typography variant="body2" color="text.secondary">{book.author}</Typography>
-                <Chip label={book.genre} sx={{ mt: 1, mb: 1 }} />
-                <Stack direction="row" alignItems="center" spacing={1}>
-                  <Rating value={Number(book.avgRating) || 0} precision={0.1} readOnly />
-                  <Typography variant="body2">{book.avgRating ? `${book.avgRating} / 5` : 'No ratings'}</Typography>
-                </Stack>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+            </Grid>
+          ) : books.map(book => (
+            <Grid key={book._id}>
+              <Card sx={{
+                cursor: 'pointer',
+                borderRadius: 3,
+                boxShadow: 3,
+                transition: 'transform 0.2s, box-shadow 0.2s',
+                '&:hover': {
+                  transform: 'translateY(-4px) scale(1.03)',
+                  boxShadow: 6,
+                },
+                minHeight: 220,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+              }} onClick={() => navigate(`/books/${book._id}`)}>
+                <Box display="flex" justifyContent="center" alignItems="center" pt={3}>
+                  <Box sx={{ width: 60, height: 80, bgcolor: '#e3eafc', borderRadius: 2, mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Typography variant="h3" color="primary" sx={{ opacity: 0.2 }}>
+                      📚
+                    </Typography>
+                  </Box>
+                </Box>
+                <CardContent>
+                  <Typography variant="h6" fontWeight={600}>{book.title}</Typography>
+                  <Typography variant="body2" color="text.secondary">{book.author}</Typography>
+                  <Chip label={book.genre} sx={{ mt: 1, mb: 1 }} />
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <Rating value={Number(book.avgRating) || 0} precision={0.1} readOnly />
+                    <Typography variant="body2">{book.avgRating ? `${book.avgRating} / 5` : 'No ratings'}</Typography>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
       <Box mt={3} display="flex" justifyContent="center">
         <Pagination count={Math.ceil(total / limit)} page={page} onChange={(_, val) => setPage(val)} color="primary" />
       </Box>
