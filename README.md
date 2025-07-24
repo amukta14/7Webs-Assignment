@@ -50,7 +50,7 @@ A vibrant, full-stack web app for discovering, reviewing, and rating books. Buil
 
 ## Loom Walkthrough
 
-(https://drive.google.com/drive/folders/14g4tZBRDGQupkHKhjK_egnRZr9W2xWrp)
+(https://drive.google.com/file/d/1OwWvd2G_Dc7TyVf2HfQPWCBRhZhw9d6n/view?usp=sharing)
 
 ## License
 
